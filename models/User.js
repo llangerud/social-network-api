@@ -1,32 +1,40 @@
 const { Schema, model } = require('mongoose');
-const thoughtSchema = require('./Thought');
 
-//Schema Settings
-//create a virtual called friendCount that retrieves the length of the user's friends array field on query
-
-const UserSchema = new Schema(
+const userSchema = new Schema(
     {
       username: {
         type: String,
-        //unique
+        unique: true,
         required: true,
-        //trimmed
+        trimmed: true
       },
       email: {
         type: String,
         required: true,
-        //unique
-        //add Mongoose email validation
+        unique: true,
+        match: {regex: "/^([a-zA-Z0-9_\.-]+)@([\a-zA-Z\.-]+)\.([a-zA-Z\.]{2,6})$/"}
       },
-      
-     //array of _id values referencing the thought model
-      thoughts: [thoughtSchema],
+      createdAt: {
+        type: Date,
+        default: Date.now,
+      },
+     //array of _id values referencing the thought model - not currently set to _id values
+      thoughts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Thought',
+      },],
       //arry of _id values referencing the user model (self ref)
-      friends:[UserSchema],
+      friends:[
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+        },],
       },
   );
 
-
+userSchema.virtual('friendCount').get(function(){
+  return this.friends.length;
+})
 
 
 const User = model('user', userSchema);
