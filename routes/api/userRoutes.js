@@ -1,18 +1,26 @@
 const router = require('express').Router();
 const { ObjectId } = require('mongoose').Types;
-const {User} = require('../models');
-
-//  /api/users
+const {User} = require('../../models');
 
 //get all users
-router.get('/api/users', (req, res) => {
+router.get('/', (req, res) => {
 User.find({}).then((users) => res.json(users));
 
 });
 
 //get a singler user by _id and populate related thought and friend data
+router.get('/:userId', (req, res) => {
+    User.findOne({ _id: req.params.userId }).then((user) => res.json(user));
+    
+    });
 
 //post a new user by accepting incoming JSON body with username and email
+router.post('/newUser',  (req,res) =>{
+     User.create(req.body), function (err, created) {
+        if (err) return console.error(err);
+     }
+    .then((user) => res.json(user));
+});
 
 //put - update a user by its _id
 

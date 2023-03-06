@@ -19,7 +19,8 @@ connection.once('open', async () => {
 
 //   await Reaction.collection.insertMany(reactions);
 
-  console.table(users, thoughts);
+  console.table(users)
+  console.table(thoughts);
   console.info('seeded');
   process.exit(0);
 });
