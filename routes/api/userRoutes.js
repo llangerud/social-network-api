@@ -41,18 +41,20 @@ router.delete('/deleteUser/:userId', async (req,res) => {
     let deletedUser = await User.findOneAndRemove(
         {_id: req.params.userId}
         )
+ 
+//BONUS - remove a user's associated thoughts when deleted       
+        if (!deletedUser) {
+        res.status(404).json({message: "no user with that id"});
+    }
+    if (deletedUser.thoughts === null) {
+        res.json({message: "user deleted"});
+    }
     let userThoughts = deletedUser.thoughts;
-    console.log(userThoughts);
     let deletedThoughts = await Thought.deleteMany({_id:{$in: userThoughts}});
-    res.json(deletedThoughts);
-    
+    if(deletedThoughts){
+    res.json({message: "user and their thoughts deleted"});
+    }
 });
-
-
-//BONUS - remove a user's associated thoughts when deleted
-
-
-
 // /api/users/:userId/friends/:friendId
 
 //POST to add a new friend to a user's friend list

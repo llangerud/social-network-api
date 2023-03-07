@@ -9,18 +9,11 @@ connection.once('open', async () => {
 
   await User.deleteMany({});
 
-  await Thought.deleteMany({});
-
-//   await Reaction.deleteMany({});
-
   await User.collection.insertMany(users);
 
-  await Thought.collection.insertMany(thoughts);
 
-//   await Reaction.collection.insertMany(reactions);
 
   console.table(users)
-  console.table(thoughts);
   console.info('seeded');
   process.exit(0);
 });
