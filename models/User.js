@@ -12,7 +12,7 @@ const userSchema = new Schema(
         type: String,
         required: true,
         unique: true,
-        // match: {regex: "/^([a-zA-Z0-9_\.-]+)@([\a-zA-Z\.-]+)\.([a-zA-Z\.]{2,6})$/"}
+        // match: [/^([a-zA-Z0-9_\.-]+)@([\a-zA-Z\.-]+)\.([a-zA-Z\.]{2,6})$/]
       },
       createdAt: {
         type: Date,
