@@ -1,10 +1,14 @@
 const router = require('express').Router();
 const { ObjectId } = require('mongoose').Types;
-const {User} = require('../../models');
+const {User, Thought} = require('../../models');
+const { thoughts } = require('../../utils/data');
 
 //get all users
 router.get('/', (req, res) => {
-User.find({}).then((users) => res.json(users));
+User.find({})
+.populate('friends')
+.populate('thoughts')
+.then((users) => res.json(users));
 
 });
 
@@ -33,15 +37,20 @@ router.put('/updateUser/:userId', (req,res) => {
 });
 
 //delete - remove a user by its _id
-router.delete('/deleteUser/:userId', (req,res) => {
-    User.findOneAndRemove(
+router.delete('/deleteUser/:userId', async (req,res) => {
+    let deletedUser = await User.findOneAndRemove(
         {_id: req.params.userId}
         )
-    .then((user) => res.json(user));
+    let userThoughts = deletedUser.thoughts;
+    console.log(userThoughts);
+    let deletedThoughts = await Thought.deleteMany({_id:{$in: userThoughts}});
+    res.json(deletedThoughts);
+    
 });
 
 
 //BONUS - remove a user's associated thoughts when deleted
+
 
 
 // /api/users/:userId/friends/:friendId

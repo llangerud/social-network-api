@@ -4,7 +4,9 @@ const {User, Thought} = require('../../models');
 
 //GET to get all thoughts
 router.get('/', (req, res) => {
-    Thought.find({}).then((thoughts) => res.json(thoughts));
+    Thought.find({})
+    .populate('reactions')
+    .then((thoughts) => res.json(thoughts));
     
     });
 
@@ -19,8 +21,11 @@ router.get('/:thoughtId', (req, res) => {
 //POST to create a new thought (don't forget to push the created thought's _id to the associated user's thoughts array field)
 router.post('/newThought', async (req,res) => {
     let newThought = await Thought.create(req.body);
-    let thisUser = await User.findOne({ username: req.body.username });
-    thisUser.thoughts.push(newThought);
+    let thisUser = await User.findOneAndUpdate({ username: req.body.username },
+        {$push: { thoughts: newThought._id}});
+    
+    
+    // thisUser.thoughts.push(newThought);
     res.json(newThought);
 
 });
