@@ -12,30 +12,23 @@ const userSchema = new Schema(
         type: String,
         required: true,
         unique: true,
-        // match: [/^([a-zA-Z0-9_\.-]+)@([\a-zA-Z\.-]+)\.([a-zA-Z\.]{2,6})$/]
+        match: [/^([a-zA-Z0-9_\.-]+)@([\a-zA-Z\.-]+)\.([a-zA-Z\.]{2,6})$/]
       },
-      createdAt: {
-        type: Date,
-        default: Date.now,
-      },
-     //array of _id values referencing the thought model - not currently set to _id values
-      thoughts: [{
+         thoughts: [{
         type: Schema.Types.ObjectId,
         ref: 'thought',
       },],
-      //arry of _id values referencing the user model (self ref)
       friends:[
         {
           type: Schema.Types.ObjectId,
           ref: 'user',
         },],
       },
-  );
+      {toJSON: {virtuals: true}} );
 
 userSchema.virtual('friendCount').get(function(){
   return this.friends.length;
 })
-
 
 const User = model('user', userSchema);
 

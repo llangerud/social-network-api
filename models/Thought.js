@@ -9,21 +9,32 @@ const thoughtSchema = new Schema(
         min_length: 1,
         max_length: 280,
       },
-      // timestamps: true,
-         //the user that created this thought
       username: {
         type: String,
         required: true
       },   
-      
-     //like a reply, an array of nested documents created with reactionSchema
       reactions: [reactionSchema],
-    });
+      //not using a getter, formatting here instead
+      createdAt: {
+        type: String,
+        default: Date
+        },
+     
+      },
+      
+      
+    {toJSON: {virtuals: true}});
 
     thoughtSchema.virtual('reactionCount').get(function(){
       return this.reactions.length;
-    })
+    });
+
+    //   thoughtSchema.virtual('formattedDate').get (function (){
+    //   return this.createdAt.toString();
+    // })
 
 const Thought = model('thought', thoughtSchema);
 
-module.exports = Thought;
+module.exports = Thought;  
+
+ 

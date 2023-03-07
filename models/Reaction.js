@@ -12,9 +12,10 @@ const reactionSchema = new Schema(
         required: true,
         max_length: 280
       },
+      //formatting in createdAt, no getter
       createdAt: {
-        type: Date,
-        default: Date.now,
+        type: String,
+        default: Date,
       },
       //the user that created this reaction
       username: {
