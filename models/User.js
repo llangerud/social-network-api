@@ -21,13 +21,13 @@ const userSchema = new Schema(
      //array of _id values referencing the thought model - not currently set to _id values
       thoughts: [{
         type: Schema.Types.ObjectId,
-        ref: 'Thought',
+        ref: 'thought',
       },],
       //arry of _id values referencing the user model (self ref)
       friends:[
         {
           type: Schema.Types.ObjectId,
-          ref: 'User',
+          ref: 'user',
         },],
       },
   );
