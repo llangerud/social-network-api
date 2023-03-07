@@ -1,6 +1,10 @@
 const { connect, connection } = require('mongoose');
 
-connect('mongodb://127.0.0.1:27017/', {
+
+const connectionString =
+  process.env.MONGO_DB_URL || 'mongodb://127.0.0.1:27017/studentsDB';
+
+connect(connectionString, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

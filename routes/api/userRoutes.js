@@ -16,10 +16,7 @@ router.get('/:userId', (req, res) => {
 
 //post a new user by accepting incoming JSON body with username and email
 router.post('/newUser',  (req,res) =>{
-     User.create(req.body), function (err, created) {
-        if (err) return console.error(err);
-     }
-    .then((user) => res.json(user));
+     User.create(req.body).then((user) => res.json(user));
 });
 
 //put - update a user by its _id
